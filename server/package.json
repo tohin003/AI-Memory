@@ -4,7 +4,8 @@
     "description": "Local auth server for AI Memory Collector",
     "main": "server.js",
     "scripts": {
-        "start": "node server.js"
+        "start": "node server.js",
+        "postinstall": "npm rebuild sqlite3"
     },
     "dependencies": {
         "@vercel/postgres": "^0.5.0",
