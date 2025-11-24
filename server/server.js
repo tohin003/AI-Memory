@@ -151,7 +151,7 @@ app.post('/send-otp', async (req, res) => {
             res.status(500).json({ error: 'Failed to send email' });
         }
     } else {
-        res.json({ message: 'OTP generated (Check console)' });
+        res.json({ message: `OTP generated: ${otp} (Email not configured)` });
     }
 });
 
