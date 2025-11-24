@@ -156,7 +156,13 @@ app.post('/send-otp', async (req, res) => {
 });
 
 app.post('/signup', async (req, res) => {
-    const { email, name, password, otp } = req.body;
+    let { email, name, password, otp } = req.body;
+
+    if (email) email = email.trim();
+    if (name) name = name.trim();
+    if (password) password = password.trim();
+    if (otp) otp = otp.trim();
+
     if (!email || !name || !password || !otp) return res.status(400).json({ error: 'All fields required' });
 
     const storedOtp = otpStore[email];
@@ -189,9 +195,17 @@ app.post('/signup', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-    const { username, email, password } = req.body;
+    let { username, email, password } = req.body;
+
+    // Sanitize
+    if (username) username = username.trim();
+    if (email) email = email.trim();
+    if (password) password = password.trim();
+
     // Support both new "username" field and legacy "email" field
     const identifier = username || email;
+
+    console.log(`[LOGIN ATTEMPT] Identifier: '${identifier}'`);
 
     if (!identifier || !password) return res.status(400).json({ error: 'Username/Email and password required' });
 
@@ -202,9 +216,21 @@ app.post('/login', async (req, res) => {
             [identifier, password]
         );
 
-        if (result.rows.length === 0) return res.status(401).json({ error: 'Invalid credentials' });
+        if (result.rows.length === 0) {
+            console.log(`[LOGIN FAILED] No match for '${identifier}' with provided password.`);
+            // Debug: Check if user exists at all
+            const userCheck = await runQuery('SELECT * FROM users WHERE email = $1 OR name = $1', [identifier]);
+            if (userCheck.rows.length > 0) {
+                console.log(`[DEBUG] User exists but password mismatch.`);
+            } else {
+                console.log(`[DEBUG] User does not exist.`);
+            }
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
 
         const user = result.rows[0];
+        console.log(`[LOGIN SUCCESS] User: ${user.email}`);
+
         const token = jwt.sign({ id: user.id, email: user.email, name: user.name }, SECRET_KEY, { expiresIn: '24h' });
 
         res.json({ message: 'Login successful', token, user: { email: user.email, name: user.name } });
