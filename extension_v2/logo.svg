@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="512" height="512" fill="none" stroke="#d7ccc8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Outer Glow/Background (Optional, for dark themes) -->
+    <defs>
+        <filter id="glow">
+            <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+            <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+
+    <!-- Book Shape -->
+    <path d="M20 30 Q 35 30 50 40 Q 65 30 80 30 V 80 Q 65 80 50 90 Q 35 80 20 80 Z" stroke="#e6a23c" stroke-width="4" fill="rgba(93, 64, 55, 0.3)" />
+    
+    <!-- Central Spine -->
+    <line x1="50" y1="40" x2="50" y2="90" stroke="#8d6e63" stroke-width="3" />
+
+    <!-- Digital Circuits / Synapses on Left Page -->
+    <circle cx="35" cy="55" r="3" fill="#e6a23c" stroke="none" />
+    <path d="M35 55 L 25 45" stroke-width="2" />
+    <path d="M35 55 L 45 60" stroke-width="2" />
+    <circle cx="25" cy="45" r="2" fill="#d7ccc8" stroke="none" />
+
+    <!-- Digital Circuits / Synapses on Right Page -->
+    <circle cx="65" cy="55" r="3" fill="#e6a23c" stroke="none" />
+    <path d="M65 55 L 75 45" stroke-width="2" />
+    <path d="M65 55 L 55 60" stroke-width="2" />
+    <circle cx="75" cy="45" r="2" fill="#d7ccc8" stroke="none" />
+
+    <!-- Spark/Star at Top Center (Idea/AI) -->
+    <path d="M50 15 L 53 22 L 60 25 L 53 28 L 50 35 L 47 28 L 40 25 L 47 22 Z" fill="#e6a23c" stroke="none" filter="url(#glow)" />
+</svg>

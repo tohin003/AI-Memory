@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+        }
+
+        spline-viewer {
+            width: 512px;
+            height: 512px;
+            display: block;
+        }
+    </style>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.0/build/spline-viewer.js"></script>
+</head>
+
+<body>
+    <!-- User's Spline Embed -->
+    <spline-viewer url="https://prod.spline.design/bVBVb-CfHQOx5QYD/scene.splinecode"></spline-viewer>
+
+    <textarea id="output"
+        style="position: fixed; top: 0; left: 0; z-index: 999; width: 100px; height: 100px;"></textarea>
+
+    <script>
+        // Wait for Spline to load
+        const viewer = document.querySelector('spline-viewer');
+
+        viewer.addEventListener('load', () => {
+            console.log('Spline loaded');
+            setTimeout(capture, 2000); // Give it a moment to render the first frame
+        });
+
+        function capture() {
+            try {
+                // Access canvas inside Shadow DOM
+                const canvas = viewer.shadowRoot.querySelector('canvas');
+                if (!canvas) {
+                    document.getElementById('output').value = "ERROR: Canvas not found";
+                    return;
+                }
+
+                // Export to PNG
+                const dataURL = canvas.toDataURL('image/png');
+                document.getElementById('output').value = dataURL;
+                document.body.setAttribute('data-status', 'done');
+            } catch (e) {
+                document.getElementById('output').value = "ERROR: " + e.message;
+                document.body.setAttribute('data-status', 'error');
+            }
+        }
+    </script>
+</body>
+
+</html>

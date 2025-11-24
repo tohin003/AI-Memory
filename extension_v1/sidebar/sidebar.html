@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Memory Collector</title>
+    <link rel="stylesheet" href="sidebar.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <div class="header-top">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="../logo.svg" alt="Logo"
+                        style="width: 28px; height: 28px; filter: drop-shadow(0 0 5px rgba(230, 162, 60, 0.3));">
+                    <h1>AI Memory Collector</h1>
+                </div>
+                <div id="user-profile">
+                    <svg class="icon-svg profile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" title="Loading...">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="header-controls">
+                <select id="project-selector">
+                    <option value="default">Default Project</option>
+                    <option value="new">+ New Project</option>
+                </select>
+
+                <div class="actions-group">
+                    <button id="copy-project-btn" class="icon-btn" title="Copy Project Context">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+                    <button id="delete-project-btn" class="icon-btn" title="Delete Project">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                            </path>
+                        </svg>
+                    </button>
+                    <div class="logout-wrapper">
+                        <button id="logout-btn" class="icon-btn" title="Logout">
+                            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <p style="font-size: 11px; color: #e6a23c; margin-top: 8px; text-align: center; opacity: 0.8;">
+                ⚠️ Reload window if chat context is not loaded
+            </p>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="recent">Recent</button>
+            <button class="tab-btn" data-tab="search">Search</button>
+            <button class="tab-btn" data-tab="data">Data</button>
+        </nav>
+
+        <main id="main-content">
+            <!-- Recent Messages Tab -->
+            <section id="recent" class="tab-content active">
+                <div id="message-list" class="message-list">
+                    <!-- Messages will be injected here -->
+                    <div class="empty-state">No recent messages captured.</div>
+                </div>
+            </section>
+
+            <!-- Search Tab -->
+            <section id="search" class="tab-content">
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Search memory...">
+                    <button id="search-btn">Go</button>
+                </div>
+                <div id="search-results" class="message-list">
+                    <!-- Search results here -->
+                </div>
+            </section>
+
+            <!-- Settings/Data Tab -->
+            <section id="data" class="tab-content">
+                <div class="settings-group">
+                    <h3>Database</h3>
+                    <button id="export-btn" class="action-btn">Export DB (.json)</button>
+                    <button id="import-btn" class="action-btn">Import DB</button>
+                    <input type="file" id="import-file" hidden>
+                </div>
+                <div class="settings-group">
+                    <h3>Stats</h3>
+                    <p>Total Memories: <span id="memory-count">0</span></p>
+                    <p>DB Size: <span id="db-size">0 KB</span></p>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script type="module" src="sidebar.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Memory Collector</title>
+    <link rel="stylesheet" href="sidebar.css">
+    <!-- Inter Font for Premium Look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+
+        <!-- Main Content Area (Left) -->
+        <main class="content-area">
+
+            <!-- Floating Header -->
+            <header class="floating-header">
+                <div class="project-controls">
+                    <select id="project-selector">
+                        <option value="default">Default Project</option>
+                        <option value="new">+ New Project</option>
+                    </select>
+                </div>
+                <div class="header-actions">
+                    <button id="copy-project-btn" class="icon-btn" title="Copy Context">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+                    <button id="delete-project-btn" class="icon-btn" title="Delete Project">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Views Container -->
+            <div id="views-container">
+
+                <!-- 1. Recent / Chat View -->
+                <section id="recent" class="view-section active">
+                    <div class="welcome-banner">
+                        <h2>Hi,</h2>
+                        <h3>I am a context manager.</h3>
+                        <p style="font-size: 0.85rem; color: #999; margin-top: 5px; font-style: italic;">
+                            *reload the webpage if your ai context is not showing here
+                        </p>
+                    </div>
+
+                    <div id="message-list" class="message-list">
+                        <!-- Messages injected here -->
+                        <div class="empty-state">No recent memories found.</div>
+                    </div>
+                </section>
+
+                <!-- 2. Search View -->
+                <section id="search" class="view-section">
+                    <div class="search-container">
+                        <input type="text" id="search-input" placeholder="Search memories...">
+                        <button id="search-btn">
+                            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="search-results" class="message-list"></div>
+                </section>
+
+                <!-- 3. Data / Settings View -->
+                <section id="data" class="view-section">
+                    <div class="settings-card">
+                        <h3>Database</h3>
+                        <button id="export-btn" class="action-btn">Export JSON</button>
+                        <button id="import-btn" class="action-btn secondary">Import JSON</button>
+                        <input type="file" id="import-file" hidden>
+                    </div>
+                    <div class="settings-card">
+                        <h3>Statistics</h3>
+                        <div class="stat-row">
+                            <span>Total Memories</span>
+                            <span id="memory-count" class="stat-value">0</span>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+
+        <!-- Right Navigation Rail -->
+        <nav class="nav-rail">
+
+            <!-- Top Icons -->
+            <div class="nav-group">
+                <div class="nav-item-wrapper" data-tooltip="Chat">
+                    <button class="nav-item active" data-tab="recent">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="nav-item-wrapper" data-tooltip="Search">
+                    <button class="nav-item" data-tab="search">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="nav-item-wrapper" data-tooltip="Data & Settings">
+                    <button class="nav-item" data-tab="data">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bottom Icons (Profile) -->
+            <div class="nav-group bottom" style="position: relative;">
+                <div id="user-profile" class="profile-avatar" title="User Profile">
+                    <!-- Image set via JS -->
+                    <img id="profile-img" src="../logo.png" alt="User"
+                        style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+
+                <!-- Profile Popover -->
+                <div id="profile-popover" class="popover hidden">
+                    <div class="popover-header">
+                        <div class="user-info">
+                            <span id="popover-username" class="username">User</span>
+                            <span id="popover-email" class="email">user@example.com</span>
+                        </div>
+                    </div>
+                    <div class="popover-actions">
+                        <button id="logout-btn" class="popover-btn danger">
+                            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                            Log Out
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </nav>
+
+    </div>
+    <script type="module" src="sidebar.js"></script>
+</body>
+
+</html>

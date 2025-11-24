@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Memory - Login</title>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7c4dff;
+            --primary-hover: #651fff;
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --text-secondary: #666;
+            --border: #e0e0e0;
+            --radius: 12px;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f7;
+            /* Light gray background for contrast */
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 360px;
+            padding: 40px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: var(--text);
+            margin: 0 0 10px 0;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        p.subtitle {
+            color: var(--text-secondary);
+            margin: 0 0 30px 0;
+            font-size: 0.95rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: #f9f9f9;
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+            box-sizing: border-box;
+            transition: all 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(124, 77, 255, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: var(--primary-hover);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .toggle-link {
+            display: block;
+            margin-top: 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .toggle-link:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        .error {
+            color: #d32f2f;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            display: none;
+            background: #ffebee;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        #signup-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .otp-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        #send-otp-btn {
+            margin-top: 0;
+            width: auto;
+            white-space: nowrap;
+            padding: 0 20px;
+            font-size: 0.9rem;
+            background: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth-container">
+        <img src="../logo.png" alt="Logo" class="logo">
+        <h2 id="auth-title">Welcome Back</h2>
+        <p class="subtitle">Sign in to continue to AI Memory</p>
+
+        <form id="auth-form">
+            <!-- Login Fields -->
+            <div id="login-fields">
+                <input type="text" id="login-username" placeholder="Username or Email" required>
+            </div>
+
+            <!-- Signup Fields -->
+            <div id="signup-fields" class="hidden">
+                <input type="text" id="signup-email" placeholder="Username or Email">
+                <div class="otp-group">
+                    <input type="text" id="otp" placeholder="Enter OTP">
+                    <button type="button" id="send-otp-btn">Send OTP</button>
+                </div>
+            </div>
+
+            <input type="password" id="password" placeholder="Password" required>
+
+            <div id="signup-fields-2" class="hidden">
+                <input type="password" id="confirm-password" placeholder="Confirm Password">
+            </div>
+
+            <button type="submit" id="submit-btn">Sign In</button>
+        </form>
+
+        <div id="error-msg" class="error"></div>
+        <span class="toggle-link" id="toggle-mode">Don't have an account? Sign Up</span>
+    </div>
+    <script src="auth.js"></script>
+</body>
+
+</html>

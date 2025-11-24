@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>body { background: #333; color: white; font-family: sans-serif; }</style>
+</head>
+<body>
+    <h2>SVG to PNG Converter</h2>
+    <div style="display: flex; gap: 20px;">
+        <div>
+            <h3>Source SVG</h3>
+            <img id="source" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJub25lIiBzdHJva2U9IiNkN2NjYzgiIHN0cm9rZS13aWR0aD0iNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICAgIDwhLS0gT3V0ZXIgR2xvdy9CYWNrZ3JvdW5kIChPcHRpb25hbCwgZm9yIGRhcmsgdGhlbWVzKSAtLT4KICAgIDxkZWZzPgogICAgICAgIDxmaWx0ZXIgaWQ9Imdsb3ciPgogICAgICAgICAgICA8ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIyLjUiIHJlc3VsdD0iY29sb3JlZEJsdXIiLz4KICAgICAgICAgICAgPGZlTWVyZ2U+CiAgICAgICAgICAgICAgICA8ZmVNZXJnZU5vZGUgaW49ImNvbG9yZWRCbHVyIi8+CiAgICAgICAgICAgICAgICA8ZmVNZXJnZU5vZGUgaW49IlNvdXJjZUdyYXBoaWMiLz4KICAgICAgICAgICAgPC9mZU1lcmdlPgogICAgICAgIDwvZmlsdGVyPgogICAgPC9kZWZzPgoKICAgIDwhLS0gQm9vayBTaGFwZSAtLT4KICAgIDxwYXRoIGQ9Ik0yMCAzMCBRIDM1IDMwIDUwIDQwIFEgNjUgMzAgODAgMzAgViA4MCBRIDY1IDgwIDUwIDkwIFEgMzUgODAgMjAgODAgWiIgc3Ryb2tlPSIjZTZhMjNjIiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9InJnYmEoOTMsIDY0LCA1NSwgMC4zKSIgLz4KICAgIAogICAgPCEtLSBDZW50cmFsIFNwaW5lIC0tPgogICAgPGxpbmUgeDE9IjUwIiB5MT0iNDAiIHgyPSI1MCIgeTI9IjkwIiBzdHJva2U9IiM4ZDZlNjMiIHN0cm9rZS13aWR0aD0iMyIgLz4KCiAgICA8IS0tIERpZ2l0YWwgQ2lyY3VpdHMgLyBTeW5hcHNlcyBvbiBMZWZ0IFBhZ2UgLS0+CiAgICA8Y2lyY2xlIGN4PSIzNSIgY3k9IjU1IiByPSIzIiBmaWxsPSIjZTZhMjNjIiBzdHJva2U9Im5vbmUiIC8+CiAgICA8cGF0aCBkPSJNMzUgNTUgTCAyNSA0NSIgc3Ryb2tlLXdpZHRoPSIyIiAvPgogICAgPHBhdGggZD0iTTM1IDU1IEwgNDUgNjAiIHN0cm9rZS13aWR0aD0iMiIgLz4KICAgIDxjaXJjbGUgY3g9IjI1IiBjeT0iNDUiIHI9IjIiIGZpbGw9IiNkN2NjYzgiIHN0cm9rZT0ibm9uZSIgLz4KCiAgICA8IS0tIERpZ2l0YWwgQ2lyY3VpdHMgLyBTeW5hcHNlcyBvbiBSaWdodCBQYWdlIC0tPgogICAgPGNpcmNsZSBjeD0iNjUiIGN5PSI1NSIgcj0iMyIgZmlsbD0iI2U2YTIzYyIgc3Ryb2tlPSJub25lIiAvPgogICAgPHBhdGggZD0iTTY1IDU1IEwgNzUgNDUiIHN0cm9rZS13aWR0aD0iMiIgLz4KICAgIDxwYXRoIGQ9Ik02NSA1NSBMIDU1IDYwIiBzdHJva2Utd2lkdGg9IjIiIC8+CiAgICA8Y2lyY2xlIGN4PSI3NSIgY3k9IjQ1IiByPSIyIiBmaWxsPSIjZDdjY2M4IiBzdHJva2U9Im5vbmUiIC8+CgogICAgPCEtLSBTcGFyay9TdGFyIGF0IFRvcCBDZW50ZXIgKElkZWEvQUkpIC0tPgogICAgPHBhdGggZD0iTTUwIDE1IEwgNTMgMjIgTCA2MCAyNSBMIDUzIDI4IEwgNTAgMzUgTCA0NyAyOCBMIDQwIDI1IEwgNDcgMjIgWiIgZmlsbD0iI2U2YTIzYyIgc3Ryb2tlPSJub25lIiBmaWx0ZXI9InVybCgjZ2xvdykiIC8+Cjwvc3ZnPgo=" width="128" height="128" onload="convert()">
+        </div>
+        <div>
+            <h3>Canvas Output</h3>
+            <canvas id="canvas" width="128" height="128" style="border: 1px solid #555;"></canvas>
+        </div>
+    </div>
+    <h3>Base64 Output:</h3>
+    <textarea id="output" rows="10" cols="50"></textarea>
+
+    <script>
+        function convert() {
+            const img = document.getElementById('source');
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const output = document.getElementById('output');
+
+            // Clear canvas (transparent background)
+            ctx.clearRect(0, 0, 128, 128);
+            
+            // Draw image
+            ctx.drawImage(img, 0, 0, 128, 128);
+            
+            // Export to PNG
+            const pngData = canvas.toDataURL('image/png');
+            output.value = pngData;
+            
+            // Signal completion for automation
+            document.body.setAttribute('data-status', 'done');
+        }
+    </script>
+</body>
+</html>

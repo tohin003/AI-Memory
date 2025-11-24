@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <canvas id="canvas" width="128" height="128"></canvas>
+    <textarea id="output"></textarea>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Clear (Transparent)
+        ctx.clearRect(0, 0, 128, 128);
+
+        // Draw Gold Circle
+        ctx.beginPath();
+        ctx.arc(64, 64, 60, 0, 2 * Math.PI);
+        ctx.fillStyle = '#e6a23c'; // Gold
+        ctx.fill();
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = '#8d6e63'; // Brown border
+        ctx.stroke();
+
+        // Draw Text "AI"
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 60px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('AI', 64, 64);
+
+        // Export
+        document.getElementById('output').value = canvas.toDataURL('image/png');
+        document.body.setAttribute('data-status', 'done');
+    </script>
+</body>
+
+</html>
