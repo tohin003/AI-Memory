@@ -171,6 +171,7 @@ app.post('/signup', async (req, res) => {
     }
 
     try {
+        console.log(`[SIGNUP] Creating user: ${email}, Password: '${password}' (Length: ${password.length})`);
         // Insert
         await runQuery(
             'INSERT INTO users (email, name, password) VALUES ($1, $2, $3)',
@@ -218,10 +219,20 @@ app.post('/login', async (req, res) => {
 
         if (result.rows.length === 0) {
             console.log(`[LOGIN FAILED] No match for '${identifier}' with provided password.`);
-            // Debug: Check if user exists at all
+
+            // Debug: Check if user exists and print stored password
             const userCheck = await runQuery('SELECT * FROM users WHERE email = $1 OR name = $1', [identifier]);
             if (userCheck.rows.length > 0) {
-                console.log(`[DEBUG] User exists but password mismatch.`);
+                const storedUser = userCheck.rows[0];
+                console.log(`[DEBUG] User found: ID=${storedUser.id}, Email=${storedUser.email}`);
+                console.log(`[DEBUG] Stored Password: '${storedUser.password}' (Length: ${storedUser.password.length})`);
+                console.log(`[DEBUG] Login Password:  '${password}' (Length: ${password.length})`);
+
+                if (storedUser.password === password) {
+                    console.log(`[DEBUG] WTF: JS says they match, but SQL failed?`);
+                } else {
+                    console.log(`[DEBUG] JS confirms they do NOT match.`);
+                }
             } else {
                 console.log(`[DEBUG] User does not exist.`);
             }
