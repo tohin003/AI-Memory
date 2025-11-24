@@ -24,7 +24,8 @@
     "https://www.perplexity.ai/*",
     "https://www.perplexity.ai/*",
     "https://copilot.microsoft.com/*",
-    "http://localhost:3000/*"
+    "http://localhost:3000/*",
+    "https://ai-memory-ejtx.vercel.app/*"
   ],
   "background": {
     "service_worker": "background/worker.js",

@@ -43,7 +43,14 @@ async function getDb() {
         return { type: 'pg', client: dbClient };
     } else {
         if (!dbClient) {
-            const dbPath = path.resolve(__dirname, 'users.db');
+            // On Vercel, filesystem is read-only. Use in-memory DB if no Postgres.
+            const isVercel = !!process.env.VERCEL;
+            const dbPath = isVercel ? ':memory:' : path.resolve(__dirname, 'users.db');
+
+            if (isVercel) {
+                console.warn("WARNING: Running on Vercel without Postgres. Using in-memory SQLite. DATA WILL BE LOST ON RESTART.");
+            }
+
             dbClient = new sqlite3.Database(dbPath);
         }
         return { type: 'sqlite', client: dbClient };

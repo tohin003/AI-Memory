@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000'; // Update this after Vercel deploy!
+const API_URL = 'https://ai-memory-ejtx.vercel.app'; // Production URL
 
 const form = document.getElementById('auth-form');
 const loginUsernameInput = document.getElementById('login-username');
