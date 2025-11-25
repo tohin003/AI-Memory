@@ -31,13 +31,14 @@ const transporter = nodemailer.createTransport({
 });
 
 // Database Abstraction
-const USE_POSTGRES = !!process.env.POSTGRES_URL;
+const POSTGRES_URL = process.env.POSTGRES_URL || process.env.DATABASE_URL || process.env.STORAGE_URL;
+const USE_POSTGRES = !!POSTGRES_URL;
 let dbClient;
 
 async function getDb() {
     if (USE_POSTGRES) {
         if (!dbClient) {
-            dbClient = createClient();
+            dbClient = createClient({ connectionString: POSTGRES_URL });
             await dbClient.connect();
         }
         return { type: 'pg', client: dbClient };
