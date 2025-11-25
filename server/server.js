@@ -38,8 +38,10 @@ let dbClient;
 async function getDb() {
     if (USE_POSTGRES) {
         if (!dbClient) {
-            dbClient = createClient({ connectionString: POSTGRES_URL });
-            await dbClient.connect();
+            // Use createPool for Vercel/Neon Postgres
+            const { createPool } = require('@vercel/postgres');
+            dbClient = createPool({ connectionString: POSTGRES_URL });
+            // Pool connects automatically on query, no need for explicit .connect()
         }
         return { type: 'pg', client: dbClient };
     } else {
