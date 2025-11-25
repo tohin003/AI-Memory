@@ -272,7 +272,8 @@ app.get('/debug/users', async (req, res) => {
             count: result.rows.length,
             users: result.rows,
             dbType: USE_POSTGRES ? 'Postgres' : 'SQLite',
-            host: USE_POSTGRES ? POSTGRES_URL.split('@')[1].split('/')[0] : 'Local'
+            host: USE_POSTGRES ? POSTGRES_URL.split('@')[1].split('/')[0] : 'Local',
+            envKeys: Object.keys(process.env).filter(k => !k.includes('SECRET') && !k.includes('PASS')) // Security: Hide secrets
         });
     } catch (err) {
         res.status(500).json({ error: err.message });
