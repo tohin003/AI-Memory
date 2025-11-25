@@ -128,7 +128,7 @@ initDb();
 
 // Routes
 app.get('/', (req, res) => {
-    res.send(`AI Memory Auth Server running (${USE_POSTGRES ? 'Postgres' : 'SQLite'}). Time: ${new Date().toISOString()}`);
+    res.send(`AI Memory Auth Server running (${USE_POSTGRES ? 'Postgres' : 'SQLite'}). Time: ${new Date().toISOString()} (v2)`);
 });
 
 app.post('/send-otp', async (req, res) => {
