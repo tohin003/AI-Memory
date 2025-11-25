@@ -264,6 +264,21 @@ app.get('/verify', (req, res) => {
     });
 });
 
+// Debug Route: List all users (Remove in production)
+app.get('/debug/users', async (req, res) => {
+    try {
+        const result = await runQuery('SELECT * FROM users');
+        res.json({
+            count: result.rows.length,
+            users: result.rows,
+            dbType: USE_POSTGRES ? 'Postgres' : 'SQLite',
+            host: USE_POSTGRES ? POSTGRES_URL.split('@')[1].split('/')[0] : 'Local'
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Auth Server running on http://localhost:${PORT}`);
 });
