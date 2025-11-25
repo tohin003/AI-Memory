@@ -87,13 +87,14 @@ async function runQuery(text, params = []) {
     }
 }
 
-try {
-    if (USE_POSTGRES) {
-        // Log the host to verify connection
-        const host = POSTGRES_URL.split('@')[1].split('/')[0];
-        console.log(`[DEBUG] Connecting to Postgres Host: ${host}`);
+async function initDb() {
+    try {
+        if (USE_POSTGRES) {
+            // Log the host to verify connection
+            const host = POSTGRES_URL.split('@')[1].split('/')[0];
+            console.log(`[DEBUG] Connecting to Postgres Host: ${host}`);
 
-        await runQuery(`
+            await runQuery(`
                 CREATE TABLE IF NOT EXISTS users (
                     id SERIAL PRIMARY KEY,
                     email TEXT UNIQUE NOT NULL,
@@ -101,8 +102,8 @@ try {
                     password TEXT NOT NULL
                 );
             `);
-    } else {
-        await runQuery(`
+        } else {
+            await runQuery(`
                 CREATE TABLE IF NOT EXISTS users (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     email TEXT UNIQUE NOT NULL,
@@ -110,17 +111,17 @@ try {
                     password TEXT NOT NULL
                 );
             `);
+        }
+        console.log(`Database initialized (${USE_POSTGRES ? 'Postgres' : 'SQLite'}).`);
+
+        // Debug: List all users
+        const result = await runQuery('SELECT * FROM users');
+        console.log(`[DEBUG] Current Users in DB (${result.rows.length}):`);
+        result.rows.forEach(u => console.log(` - ID: ${u.id}, Email: ${u.email}, Name: ${u.name}`));
+
+    } catch (error) {
+        console.error('Database initialization failed:', error);
     }
-    console.log(`Database initialized (${USE_POSTGRES ? 'Postgres' : 'SQLite'}).`);
-
-    // Debug: List all users
-    const result = await runQuery('SELECT * FROM users');
-    console.log(`[DEBUG] Current Users in DB (${result.rows.length}):`);
-    result.rows.forEach(u => console.log(` - ID: ${u.id}, Email: ${u.email}, Name: ${u.name}`));
-
-} catch (error) {
-    console.error('Database initialization failed:', error);
-}
 }
 
 initDb();
