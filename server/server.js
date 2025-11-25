@@ -227,15 +227,7 @@ app.post('/login', async (req, res) => {
         // 2. Compare password in JS
         if (user.password !== password) {
             console.log(`[LOGIN FAILED] Password mismatch for '${identifier}'`);
-
-            // Generate detailed debug info with Character Codes
-            const storedCodes = user.password.split('').map(c => c.charCodeAt(0)).join(',');
-            const inputCodes = password.split('').map(c => c.charCodeAt(0)).join(',');
-
-            const debugMsg = `Mismatch! Stored: [${storedCodes}], Input: [${inputCodes}]`;
-            console.log(debugMsg);
-
-            return res.status(401).json({ error: debugMsg });
+            return res.status(401).json({ error: 'Invalid credentials' });
         }
 
         console.log(`[LOGIN SUCCESS] User: ${user.email}`);
