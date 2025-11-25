@@ -114,11 +114,6 @@ async function initDb() {
         }
         console.log(`Database initialized (${USE_POSTGRES ? 'Postgres' : 'SQLite'}).`);
 
-        // Debug: List all users
-        const result = await runQuery('SELECT * FROM users');
-        console.log(`[DEBUG] Current Users in DB (${result.rows.length}):`);
-        result.rows.forEach(u => console.log(` - ID: ${u.id}, Email: ${u.email}, Name: ${u.name}`));
-
     } catch (error) {
         console.error('Database initialization failed:', error);
     }
@@ -262,22 +257,6 @@ app.get('/verify', (req, res) => {
         if (err) return res.sendStatus(403);
         res.json({ valid: true, user });
     });
-});
-
-// Debug Route: List all users (Remove in production)
-app.get('/debug/users', async (req, res) => {
-    try {
-        const result = await runQuery('SELECT * FROM users');
-        res.json({
-            count: result.rows.length,
-            users: result.rows,
-            dbType: USE_POSTGRES ? 'Postgres' : 'SQLite',
-            host: USE_POSTGRES ? POSTGRES_URL.split('@')[1].split('/')[0] : 'Local',
-            envKeys: Object.keys(process.env).filter(k => !k.includes('SECRET') && !k.includes('PASS')) // Security: Hide secrets
-        });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
 });
 
 app.listen(PORT, () => {
