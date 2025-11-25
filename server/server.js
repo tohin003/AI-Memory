@@ -211,28 +211,33 @@ app.post('/login', async (req, res) => {
     if (!identifier || !password) return res.status(400).json({ error: 'Username/Email and password required' });
 
     try {
-        // Check against both email and name
+        // 1. Find user by identifier (email or name)
         const result = await runQuery(
-            'SELECT * FROM users WHERE (email = $1 OR name = $1) AND password = $2',
-            [identifier, password]
+            'SELECT * FROM users WHERE email = $1 OR name = $1',
+            [identifier]
         );
 
         if (result.rows.length === 0) {
-            console.log(`[LOGIN FAILED] No match for '${identifier}' with provided password.`);
-
-            // Debug: Check if user exists and print stored password
-            const userCheck = await runQuery('SELECT * FROM users WHERE email = $1 OR name = $1', [identifier]);
-            if (userCheck.rows.length > 0) {
-                const storedUser = userCheck.rows[0];
-                const debugMsg = `Mismatch! Stored: '${storedUser.password}' (${storedUser.password.length}), Input: '${password}' (${password.length})`;
-                console.log(debugMsg);
-                return res.status(401).json({ error: debugMsg });
-            } else {
-                return res.status(401).json({ error: 'User not found in DB' });
-            }
+            console.log(`[LOGIN FAILED] User not found: '${identifier}'`);
+            return res.status(401).json({ error: 'Invalid credentials (User not found)' });
         }
 
         const user = result.rows[0];
+
+        // 2. Compare password in JS
+        if (user.password !== password) {
+            console.log(`[LOGIN FAILED] Password mismatch for '${identifier}'`);
+
+            // Generate detailed debug info with Character Codes
+            const storedCodes = user.password.split('').map(c => c.charCodeAt(0)).join(',');
+            const inputCodes = password.split('').map(c => c.charCodeAt(0)).join(',');
+
+            const debugMsg = `Mismatch! Stored: [${storedCodes}], Input: [${inputCodes}]`;
+            console.log(debugMsg);
+
+            return res.status(401).json({ error: debugMsg });
+        }
+
         console.log(`[LOGIN SUCCESS] User: ${user.email}`);
 
         const token = jwt.sign({ id: user.id, email: user.email, name: user.name }, SECRET_KEY, { expiresIn: '24h' });
