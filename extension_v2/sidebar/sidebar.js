@@ -28,7 +28,7 @@ async function init() {
 
         // Verify token validity with server (optional but good for security)
         try {
-            const res = await fetch('http://localhost:3000/verify', {
+            const res = await fetch('https://ai-memory-ejtx.vercel.app/verify', {
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });
             if (!res.ok) throw new Error('Invalid token');

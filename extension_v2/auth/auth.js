@@ -137,8 +137,14 @@ form.addEventListener('submit', async (e) => {
             });
 
             const data = await response.json();
-            handleAuthResponse(response, data);
+            if (!response.ok) {
+                alert("Login Failed: " + (data.error || 'Unknown error'));
+                handleAuthResponse(response, data);
+            } else {
+                handleAuthResponse(response, data);
+            }
         } catch (err) {
+            alert('Login failed. Server error: ' + err.message);
             showError('Login failed. Server error.');
         } finally {
             submitBtn.disabled = false;

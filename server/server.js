@@ -224,19 +224,12 @@ app.post('/login', async (req, res) => {
             const userCheck = await runQuery('SELECT * FROM users WHERE email = $1 OR name = $1', [identifier]);
             if (userCheck.rows.length > 0) {
                 const storedUser = userCheck.rows[0];
-                console.log(`[DEBUG] User found: ID=${storedUser.id}, Email=${storedUser.email}`);
-                console.log(`[DEBUG] Stored Password: '${storedUser.password}' (Length: ${storedUser.password.length})`);
-                console.log(`[DEBUG] Login Password:  '${password}' (Length: ${password.length})`);
-
-                if (storedUser.password === password) {
-                    console.log(`[DEBUG] WTF: JS says they match, but SQL failed?`);
-                } else {
-                    console.log(`[DEBUG] JS confirms they do NOT match.`);
-                }
+                const debugMsg = `Mismatch! Stored: '${storedUser.password}' (${storedUser.password.length}), Input: '${password}' (${password.length})`;
+                console.log(debugMsg);
+                return res.status(401).json({ error: debugMsg });
             } else {
-                console.log(`[DEBUG] User does not exist.`);
+                return res.status(401).json({ error: 'User not found in DB' });
             }
-            return res.status(401).json({ error: 'Invalid credentials' });
         }
 
         const user = result.rows[0];
